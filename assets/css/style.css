@@ -1,0 +1,17 @@
+body {
+    background-image: url(../img/pexels-jessbaileydesign.jpg);
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: cover;
+}
+
+#container {
+    width: 90%; 
+    height: 90%;
+    position: absolute;
+    margin: auto;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+}
