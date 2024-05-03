@@ -106,7 +106,7 @@ class Contour(Draw):
         margin_top = 0.75
         margin_left = 0.05
         slider_width = 0.08
-        self.__style_labels = ["风格一", "风格二", "风格三"]
+        self.__style_labels = [f"主题{i}" for i in range(1, 4)]
         item_count = len(self.__style_labels)
         style_radio_ax = plt.axes([margin_left - 0.04, margin_top, 0.13, 0.05 * item_count])
         self.__style_radio_button = pltw.RadioButtons(style_radio_ax, self.__style_labels)
@@ -206,8 +206,8 @@ class Contour(Draw):
     def plot(self):
         ctx = self.__load_ctx()
         z = self.__remap_data(ctx["data"], ctx["row"], ctx["col"]) if ctx["remap"] else ctx["data"]
-        if transpose:
-            z = np.transpose(np.mat(z))
+        if ctx["transpose"]:
+            z = np.transpose(z)
         self.__clean_ax()
         ax.grid(linestyle="-.")
         flush_status = True
