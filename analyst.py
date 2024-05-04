@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 import time
+import socket
 import websockets
 from matplotlib import pyplot as plt
 from matplotlib import widgets as pltw
@@ -75,9 +76,10 @@ async def handle_event(websocket, path):
 
 def setup_ws_server():
     asyncio.set_event_loop(asyncio.new_event_loop())
-    start_server = websockets.serve(handle_event, "127.0.0.1", draw_env["ws_port"])
+    ipv4_address = socket.gethostbyname(socket.getfqdn())
+    start_server = websockets.serve(handle_event, ipv4_address, draw_env["ws_port"])
     asyncio.get_event_loop().run_until_complete(start_server)
-    debug(f"waiting for client to connect, ws_port={draw_env["ws_port"]}.")
+    debug(f"ws_address=ws://{ipv4_address}:{draw_env["ws_port"]}, waiting...")
     asyncio.get_event_loop().run_forever()
 
 class Draw(object):
