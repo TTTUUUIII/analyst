@@ -79,7 +79,7 @@ def setup_ws_server():
     ipv4_address = socket.gethostbyname(socket.getfqdn())
     start_server = websockets.serve(handle_event, ipv4_address, draw_env["ws_port"])
     asyncio.get_event_loop().run_until_complete(start_server)
-    debug(f"ws_address=ws://{ipv4_address}:{draw_env["ws_port"]}, waiting...")
+    debug(f"ws_address=ws://{ipv4_address}:{draw_env['ws_port']}, waiting...")
     asyncio.get_event_loop().run_forever()
 
 class Draw(object):
