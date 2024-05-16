@@ -108,15 +108,15 @@ class Contour(Draw):
     
     def __init__(self):
         margin_top = 0.75
-        margin_left = 0.05
+        margin_left = 0.07
         slider_width = 0.08
-        self.__style_labels = [f"主题{i}" for i in range(1, 4)]
+        self.__style_labels = [f"Theme{i}" for i in range(1, 4)]
         item_count = len(self.__style_labels)
         style_radio_ax = plt.axes([margin_left - 0.04, margin_top, 0.13, 0.05 * item_count])
         self.__style_radio_button = pltw.RadioButtons(style_radio_ax, self.__style_labels)
         self.__style_radio_button.on_clicked(self.__on_radio_action)
 
-        self.__cmap_labels = [f"色调{i}" for i in range(1, len(self.__all_cmaps) + 1)]
+        self.__cmap_labels = [f"Color{i}" for i in range(1, len(self.__all_cmaps) + 1)]
         item_count = len(self.__cmap_labels)
         margin_top = margin_top - 0.05 * item_count - 0.03
         cmap_radio_ax = plt.axes([margin_left - 0.04, margin_top, 0.13, 0.05 * item_count])
@@ -125,22 +125,22 @@ class Contour(Draw):
 
         margin_top = margin_top - 0.05
         linewidths_slider_ax = plt.axes([margin_left, margin_top, slider_width, 0.02])
-        self.__linewidths_slider = pltw.Slider(linewidths_slider_ax, "线条宽度", 0.0, 3.0, valinit=self.__linewidths)
+        self.__linewidths_slider = pltw.Slider(linewidths_slider_ax, "Line Width", 0.0, 3.0, valinit=self.__linewidths)
         self.__linewidths_slider.on_changed(self.__on_update_linewidths)
 
         margin_top = margin_top - 0.05
         title_font_size_slider_ax = plt.axes([margin_left, margin_top, slider_width, 0.02])
-        self.__title_font_size_slider = pltw.Slider(title_font_size_slider_ax, "标题尺寸", 13, 50, valinit=self.__title_font_size)
+        self.__title_font_size_slider = pltw.Slider(title_font_size_slider_ax, "Title Size", 13, 50, valinit=self.__title_font_size)
         self.__title_font_size_slider.on_changed(self.__on_update_title_font_size)
 
         margin_top = margin_top - 0.05
         axis_font_size_slider_ax = plt.axes([margin_left, margin_top, slider_width, 0.02])
-        self.__axis_font_size_slider = pltw.Slider(axis_font_size_slider_ax, "刻度尺寸", 10, 30, valinit=self.__axis_font_size)
+        self.__axis_font_size_slider = pltw.Slider(axis_font_size_slider_ax, "Axis Size", 10, 30, valinit=self.__axis_font_size)
         self.__axis_font_size_slider.on_changed(self.__on_update_axis_font_size)
 
         margin_top = margin_top - 0.05
         levels_slider_ax = plt.axes([margin_left, margin_top, slider_width, 0.02])
-        self.__levels_slider = pltw.Slider(levels_slider_ax, "划分粒度", 10, 35, valinit=self.__levels)
+        self.__levels_slider = pltw.Slider(levels_slider_ax, "Granularity", 10, 35, valinit=self.__levels)
         self.__levels_slider.on_changed(self.__on_update_levels)
 
     def __on_update_linewidths(self, value):
@@ -182,7 +182,7 @@ class Contour(Draw):
             "data": take_of("data"),
             "row": take_of_default("row", 0),
             "col": take_of_default("col", 0),
-            "title": take_of_default("title", "无标题"),
+            "title": take_of_default("title", "No Title"),
             "remap": take_of_default("remap", False),
             "transpose": take_of_default("transpose", False)
         }
@@ -293,10 +293,10 @@ def show_help():
         usage: 
             python analyst.py [options]
         options:
-            -s, --size          初始化窗口尺寸。
-            -f, --fps           绘制速度，值越大绘制速度越快，1-30。
-            -d, --debug         用于调试模式，调试模式下程序只绘制内部生成的样板数据，且任何其他功能（例如：websocket）都处于禁用状态。
-            -h, --help          显示帮助信息。
+            -s, --size          Initialize window size.
+            -f, --fps           Draw speed, the larger the value, the faster the speed, 1-30。
+            -d, --debug         Only for debug.
+            -h, --help          Show help.
     """
     print(usage)
 
