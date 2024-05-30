@@ -21,7 +21,8 @@
       "row": pass,
       "col": pass,
       "transpose": pass,
-      "remap": pass
+      "remap": pass,
+      "title" pass
     }
   }
 ```
@@ -32,4 +33,5 @@
 > `col`             `int`     指明数据有多少列（一维）
 > `remap`           `bool`    指明数据是否需要重映射
 > `transpose`       `bool`    指明数据是否需要转置处理
+> `title`           `string`  指名图表标题
 ```

@@ -76,7 +76,7 @@ async def handle_event(websocket, path):
 
 def setup_ws_server():
     asyncio.set_event_loop(asyncio.new_event_loop())
-    ipv4_address = socket.gethostbyname(socket.getfqdn())
+    ipv4_address = "127.0.0.1"
     start_server = websockets.serve(handle_event, ipv4_address, draw_env["ws_port"])
     asyncio.get_event_loop().run_until_complete(start_server)
     debug(f"ws_address=ws://{ipv4_address}:{draw_env['ws_port']}, waiting...")
@@ -184,7 +184,9 @@ class Contour(Draw):
             "col": take_of_default("col", 0),
             "title": take_of_default("title", "No Title"),
             "remap": take_of_default("remap", False),
-            "transpose": take_of_default("transpose", False)
+            "transpose": take_of_default("transpose", False),
+            "y_min": take_of_default("y_min", 0),
+            "y_max": take_of_default("y_max", 0)
         }
         return ctx
 
@@ -215,13 +217,17 @@ class Contour(Draw):
         self.__clean_ax()
         ax.grid(linestyle="-.")
         flush_status = True
+
+        y = np.linspace(0, 1, len(z))
+        x = np.linspace(0, len(z), len(z[0]))
+        X,Y = np.meshgrid(x, y)
         if self.__style == self.__style_0:
-            cntr = ax.contour(z, self.__levels, cmap=self.__cmap, linewidths=self.__linewidths, linestyles=self.__linestyles)
+            cntr = ax.contour(X, Y, z, self.__levels, cmap=self.__cmap, linewidths=self.__linewidths, linestyles=self.__linestyles)
             ax.clabel(cntr, inline=True, fontsize=8)
         elif self.__style == self.__style_1:
-            cntr = ax.contourf(z, self.__levels, cmap=self.__cmap)
+            cntr = ax.contourf(X, Y, z, self.__levels, cmap=self.__cmap)
         elif self.__style == self.__style_2:
-            cntr = ax.contourf(z, self.__levels, cmap=self.__cmap)
+            cntr = ax.contourf(X, Y, z, self.__levels, cmap=self.__cmap)
             ax.contour(cntr, self.__levels, colors="k", linewidths=self.__linewidths, linestyles=self.__linestyles)
         else:
             warn(f"unknown this style {__style}")
