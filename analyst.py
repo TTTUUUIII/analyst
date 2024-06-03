@@ -76,7 +76,7 @@ async def handle_event(websocket, path):
 
 def setup_ws_server():
     asyncio.set_event_loop(asyncio.new_event_loop())
-    ipv4_address = "127.0.0.1"
+    ipv4_address = socket.gethostbyname(socket.getfqdn())
     start_server = websockets.serve(handle_event, ipv4_address, draw_env["ws_port"])
     asyncio.get_event_loop().run_until_complete(start_server)
     debug(f"ws_address=ws://{ipv4_address}:{draw_env['ws_port']}, waiting...")
@@ -218,7 +218,7 @@ class Contour(Draw):
         ax.grid(linestyle="-.")
         flush_status = True
 
-        y = np.linspace(0, 1, len(z))
+        y = np.linspace(ctx["y_min"], ctx["y_max"], len(z))
         x = np.linspace(0, len(z), len(z[0]))
         X,Y = np.meshgrid(x, y)
         if self.__style == self.__style_0:
