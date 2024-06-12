@@ -92,7 +92,7 @@ class Contour(Draw):
     __style_0 = 0
     __style_1 = 1
     __style_2 = 2
-    __all_cmaps = ["viridis" ,"cividis" , "plasma" , "inferno" , "magma", "hot" , "jet"]
+    __all_cmaps = ["jet", "viridis" ,"cividis" , "plasma" , "inferno" , "magma", "hot"]
     
     __colorbar_added = False
     __options_added = False
@@ -168,10 +168,10 @@ class Contour(Draw):
     def __on_update_style(self, label):
         new_style = self.__style_labels.index(label)
         if new_style == self.__style_0:
+            pass
+        elif new_style == self.__style_1:
             self.__linewidths = 1.5
             self.__linestyles = "-"
-        elif new_style == self.__style_1:
-            pass
         else:
             self.__linewidths = 0.8
             self.__linestyles = "-."
@@ -186,7 +186,11 @@ class Contour(Draw):
             "remap": take_of_default("remap", False),
             "transpose": take_of_default("transpose", False),
             "y_min": take_of_default("y_min", 0),
-            "y_max": take_of_default("y_max", 0)
+            "y_max": take_of_default("y_max", 0),
+            "x_min": take_of_default("x_min", 0),
+            "x_max": take_of_default("x_max", 0),
+            "x_label": take_of_default("x_label", ""),
+            "y_label": take_of_default("y_label", "")
         }
         return ctx
 
@@ -216,16 +220,18 @@ class Contour(Draw):
             z = np.transpose(z)
         self.__clean_ax()
         ax.grid(linestyle="-.")
+        ax.set_xlabel(ctx["x_label"])
+        ax.set_ylabel(ctx["y_label"])
         flush_status = True
 
         y = np.linspace(ctx["y_min"], ctx["y_max"], len(z))
-        x = np.linspace(0, len(z), len(z[0]))
+        x = np.linspace(ctx["x_min"], ctx["x_max"], len(z[0]))
         X,Y = np.meshgrid(x, y)
         if self.__style == self.__style_0:
+            cntr = ax.contourf(X, Y, z, self.__levels, cmap=self.__cmap)
+        elif self.__style == self.__style_1:
             cntr = ax.contour(X, Y, z, self.__levels, cmap=self.__cmap, linewidths=self.__linewidths, linestyles=self.__linestyles)
             ax.clabel(cntr, inline=True, fontsize=8)
-        elif self.__style == self.__style_1:
-            cntr = ax.contourf(X, Y, z, self.__levels, cmap=self.__cmap)
         elif self.__style == self.__style_2:
             cntr = ax.contourf(X, Y, z, self.__levels, cmap=self.__cmap)
             ax.contour(cntr, self.__levels, colors="k", linewidths=self.__linewidths, linestyles=self.__linestyles)
@@ -255,7 +261,7 @@ def env_create():
     fig.set_figwidth(draw_env["figure_width"])
     fig.set_figheight(draw_env["figure_height"])
     plt.connect("close_event", on_window_close)
-    plt.subplots_adjust(left=0.2)
+    plt.subplots_adjust(left=0.22, right=1.0)
     ax.grid(linestyle="-.")
     if _debug:
         draw_env["type"] = _type_contour
